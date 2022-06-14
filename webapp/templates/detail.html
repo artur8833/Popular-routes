@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ maps_routes.title }}
+{% endblock %}
+
+{% block content %}
+    <a href="{{ url_for('index') }}">Вернуться к списку маршрутов</a>
+    <h1>{{ maps_routes.title }}</h1>
+    <p>{{ maps_routes.description }}</p>
+{% endblock %}
