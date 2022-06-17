@@ -93,6 +93,13 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
               <span class="navbar-toggler-icon"></span>
             </button>
+            <div>
+              {% if weather %}
+                  Дата: {{ weather.date }}, Погода: {{ weather.temp_C }}, ощущается как {{ weather.FeelsLikeC }}
+              {% else %}
+                    Сервис погоды временно не доступен
+              {% endif %}
+              </div>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
@@ -113,14 +120,14 @@
     <div class="grid-posts">
       <div class="container">
         <div class="row">
-          {% for maps_routes in map_rout %}
+          {% for maps_routes in map_route %}
             <div class="col-md-4">
               <div class="card-body">
                 <img src="{{ url_for('static', filename=thumbnail(maps_routes.image)) }}" class="card-img-top" alt="{{ maps_routes.title }}">
                 <div class="card-body">
                   <h5 class="post-title">{{ maps_routes.title }}</h5>
                   <p class="card-text">{{ maps_routes.description }}</p>
-                  <a href="/trail" class="btn btn-primary">Подробнее</a>
+                  <a href="{{ url_for('detail', pk=maps_routes.id) }}" class="btn btn-primary">Подробнее</a>
                 </div>
               </div>
             </div>

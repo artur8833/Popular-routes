@@ -1,8 +1,10 @@
 from flask import Flask, render_template
 from webapp.model import Route
 from webapp.extensions import db, migrate
-from webapp.admin import RouteImageView
+from webapp.admin import RouteImageView, form
 from flask_admin import Admin
+from webapp.weather import weather_by_city
+
 
 
 def create_app():
@@ -12,22 +14,19 @@ def create_app():
     app.config['SECRET_KEY'] = '123456'
     register_extensions(app)
 
-    admin = Admin(app, name='map_rout', template_mode='bootstrap4')
+    admin = Admin(app, name='map_rout', template_mode='bootstrap3')
     register_admin_views(admin)
 
     @app.route('/')
     def index():
         map_route = Route.query.all()
-        return render_template("index2.html", map_route=map_route)
+        weather = weather_by_city("Sochi, Russia")
+        return render_template("index2.html", map_route=map_route, thumbnail=form.thumbgen_filename, weather=weather)
 
     @app.route('/<int:pk>')
     def detail(pk):
         maps_routes = Route.query.filter_by(id=pk).first()
         return render_template("detail.html", maps_routes=maps_routes)
-    
-    @app.route('/trail')
-    def trail():
-        return render_template("trail.html")
 
     return app
 

@@ -20,3 +20,5 @@ zipp==3.8.0
 admin~=0.0.1
 Routes~=2.5.1
 MyApplication~=0.1.0
+folium~=0.12.1.post1
+requests~=2.28.0
