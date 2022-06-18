@@ -4,7 +4,8 @@ from webapp.extensions import db, migrate
 from webapp.admin import RouteImageView, form
 from flask_admin import Admin
 from webapp.weather import weather_by_city
-
+import folium
+import os
 
 
 def create_app():
@@ -19,14 +20,26 @@ def create_app():
 
     @app.route('/')
     def index():
-        map_route = Route.query.all()
+        map_rout = Route.query.all()
         weather = weather_by_city("Sochi, Russia")
-        return render_template("index2.html", map_route=map_route, thumbnail=form.thumbgen_filename, weather=weather)
+        return render_template("index2.html", map_rout=map_rout, thumbnail=form.thumbgen_filename, weather=weather)
 
     @app.route('/<int:pk>')
     def detail(pk):
         maps_routes = Route.query.filter_by(id=pk).first()
         return render_template("detail.html", maps_routes=maps_routes)
+
+    @app.route('/detailmap_ag')
+    def detailmap_ag():
+        folium_map = folium.Map(location=[43.6798, 40.2814], zoom_start=17)
+        walkData = os.path.join('walk.json')
+        folium.GeoJson(walkData, name='walk').add_to(folium_map)
+        folium_map.save('templates/map.html')
+        return render_template("detail.html")
+
+    @app.route('/map')
+    def map():
+        return render_template('map.html')
 
     return app
 

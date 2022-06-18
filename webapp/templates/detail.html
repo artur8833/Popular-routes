@@ -1,30 +1,18 @@
-<html lang="ru">
-<head>
-    <title>Подключение Bootstrap 4 к HTML странице</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
-    <link href="/examples/vendors/bootstrap-4.1/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ maps_routes.title }}</title>
-</head>
-<body>
-    <a href="{{url_for('index')}}">Index</a>
-    <h1>{{ maps_routes.title }}</h1>
-    <p>{{ maps_routes.description }}</p>
-    <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel">
+{% extends 'base.html' %}
 
+{% block title %}
+    {{ maps_routes.title }}
+{% endblock %}
+
+
+{% block content %}
+    <a href="{{ url_for('index') }}">Вернуться к списку маршрутов</a>
+    <h1>{{ maps_routes.title }}</h1>
+    <body>
   <div class="container text-center">
     <h1 class="h3 mt-5 mb-1">Фото Агурские водопады</h1>
     <h2 class="lead mt-0 mb-5"></h2>
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"/>
       <div class="container slider">
@@ -82,12 +70,20 @@
                   </div>
               </div>
           </div>
-          <div>
-              {% include "map.html" %}
-            </div>
+
           <script src="/examples/vendors/jquery/jquery-3.3.1.min.js"></script>
           <script src="/examples/vendors/popper.js/popper.min.js"></script>
           <script src="/examples/vendors/bootstrap-4.1/js/bootstrap.min.js"></script>
-
     </body>
-  </html>
+    <p>{{ maps_routes.description }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <h1>  Карта  🌏</h1>
+    <iframe class="map", src="/map" width="800" height="800"></iframe>
+    <h3><b style="background-color: lightcoral; color: lightcyan;">
+    </b></h3>
+</body>
+</html>
+{% endblock %}
+
