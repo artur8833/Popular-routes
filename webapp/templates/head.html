@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="grid-posts">
+    <div class="container">
+      <div class="row">
+        {% for map_rout in maps_routes %}
+          <div class="col-md-4">
+            <div class="card-body">
+              <img src="{{ url_for('static', filename=thumbnail(map_rout.image)) }}" class="card-img-top" alt="{{ map_rout.title }}">
+              <div class="card-body">
+                <h5 class="post-title">{{ maps_routes.title }}</h5>
+                <p class="card-text">{{ maps_routes.description }}</p>
+                <a href="{{ url_for('detail', pk=maps_routes.id) }}" class="btn btn-primary">Подробнее</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
