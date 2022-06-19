@@ -14,6 +14,7 @@ def create_app():
     app.config["FLASK_ADMIN_SWATCH"] = 'cerulean'
     app.config['SECRET_KEY'] = '123456'
     register_extensions(app)
+    migrate.init_app(app, db, render_as_batch=True)
 
     admin = Admin(app, name='map_rout', template_mode='bootstrap3')
     register_admin_views(admin)
@@ -29,17 +30,15 @@ def create_app():
         maps_routes = Route.query.filter_by(id=pk).first()
         return render_template("detail.html", maps_routes=maps_routes)
 
-    @app.route('/detailmap_ag')
-    def detailmap_ag():
+    @app.route('/<int:Route_id>/')
+    def detailmap_ag(Route_id):
+        maps_routes = Route.query.filter_by(id=1).first()
         folium_map = folium.Map(location=[43.6798, 40.2814], zoom_start=17)
         walkData = os.path.join('walk.json')
         folium.GeoJson(walkData, name='walk').add_to(folium_map)
-        folium_map.save('templates/map.html')
-        return render_template("detail.html")
-
-    @app.route('/map')
-    def map():
-        return render_template('map.html')
+        folium_map.save('map.html')
+        m = "1"
+        return render_template("detailmap_ag.html", maps_routes=maps_routes, folium_map=folium_map, m=m)
 
     return app
 
