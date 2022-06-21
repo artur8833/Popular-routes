@@ -1,7 +1,7 @@
 from flask import Flask, render_template
-from webapp.model import Route
+from webapp.model import Route, Coordinate
 from webapp.extensions import db, migrate
-from webapp.admin import RouteImageView, form
+from webapp.admin import RouteImageView, form, CoordinateModelView
 from flask_admin import Admin
 from webapp.weather import weather_by_city
 import folium
@@ -14,19 +14,19 @@ def create_app():
     app.config["FLASK_ADMIN_SWATCH"] = 'cerulean'
     app.config['SECRET_KEY'] = '123456'
     register_extensions(app)
-    migrate.init_app(app, db, render_as_batch=True)
 
-    admin = Admin(app, name='map_rout', template_mode='bootstrap3')
+    admin = Admin(app, name='map_rout', template_mode='bootstrap4')
     register_admin_views(admin)
 
     @app.route('/')
     def index():
         map_rout = Route.query.all()
         weather = weather_by_city("Sochi, Russia")
-        return render_template("index2.html", map_rout=map_rout, thumbnail=form.thumbgen_filename, weather=weather)
+        return render_template("index.html", map_rout=map_rout, thumbnail=form.thumbgen_filename, weather=weather)
 
     @app.route('/<int:pk>')
     def detail(pk):
+        
         maps_routes = Route.query.filter_by(id=pk).first()
         return render_template("detail.html", maps_routes=maps_routes)
 
@@ -46,6 +46,8 @@ def create_app():
 
 def register_admin_views(admin):
     admin.add_view(RouteImageView(Route, db.session))
+    admin.add_view(CoordinateModelView(Coordinate, db.session))
+
 
 
 def register_extensions(app):
