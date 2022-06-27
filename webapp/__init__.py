@@ -24,9 +24,10 @@ def create_app():
     admin = Admin(app, name='map_rout', template_mode='bootstrap4')
     register_admin_views(admin)
 
+
     @app.route('/')
-    def index():
-        
+    def index():        
+
         map_rout = Route.query.all()
         weather = weather_by_city("Sochi, Russia")
         return render_template("index.html", map_rout=map_rout, thumbnail=form.thumbgen_filename, weather=weather)
@@ -46,22 +47,22 @@ def create_app():
         left=200,
         top=80) 
 
-
-        tooltip_for_picture = 'Палаточная остановка'
-        html_for_picture = '<img src="data:image/png;base64,{}">'.format
+        title = '<h2>Начало маршрута<h2/>'
+        picture = base64.b64encode(open('./webapp/static/palatka/ko.png', 'rb').read()).decode()
+        html = f'{title}<img src="data:image/JPG;base64,{picture}">'
+        iframe = IFrame(html, width=632 + 20, height=420 + 20)
+        popup = folium.Popup(iframe, max_width=1000)
         
-        
-        #picture = base64.b64decode(open('./webapp/static/palatka/ko.png','rb').read()).decode()
-        #iframe_for_picture = IFrame(html_for_picture(picture),width=600+20,height=400+20)
-        #popup_for_picture = folium.Popup(iframe_for_picture, max_width=650)
-        #icon_for_picture = folium.Icon(color='red', icon="glyphicon-home")
-        #marker_for_picture=folium.Marker(location=[40.3554, 43.6949], popup=popup_for_picture, tooltip=tooltip_for_picture, icon=icon_for_picture).add_to(folium_map)
+        folium.Marker(
+        location=[43.6949, 40.3554 ],
+        popup=popup,
+        icon=folium.Icon(icon='glyphicon-home', color="red"),
+        draggable=False).add_to(folium_map)
 
         folium.Marker(location=[start_location.latitude, start_location.longitude],
         popup="Начало маршрута",
         icon=folium.Icon(icon='info-sign', color="red"),
         draggable=False).add_to(folium_map)
-
 
         maps_routes = Route.query.filter_by(id=pk).first()
         return render_template("detail.html", maps_routes=maps_routes,folium_map=folium_map._repr_html_())
@@ -78,3 +79,4 @@ def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db)
     return None
+
