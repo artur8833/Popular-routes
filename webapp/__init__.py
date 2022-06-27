@@ -1,11 +1,9 @@
 from flask import Flask, render_template
-from webapp.model import Route, Coordinate
+from webapp.model import Route, Coordinate, Detail, Visual
 from webapp.extensions import db, migrate
-from webapp.admin import RouteImageView, form, CoordinateModelView
+from webapp.admin import RouteImageView, form, CoordinateModelView, DetailModelView, VisualModelView
 from flask_admin import Admin
 from webapp.weather import weather_by_city
-import folium
-import os
 
 
 def create_app():
@@ -26,20 +24,8 @@ def create_app():
 
     @app.route('/<int:pk>')
     def detail(pk):
-        
-        maps_routes = Route.query.filter_by(id=pk).first()
-        return render_template("detail.html", maps_routes=maps_routes)
-
-    @app.route('/<int:Route_id>/')
-    def detailmap_ag():
-        maps_routes = Route.query.filter_by(id)
-        1
-        folium_map = folium.Map(location=[43.6798, 40.2814], zoom_start=17)
-        walkData = os.path.join('walk.json')
-        folium.GeoJson(walkData, name='walk').add_to(folium_map)
-        return render_template(
-            "detail.html", folium_map=folium_map._repr_html_(), maps_routes=maps_routes,
-        )
+        route = Route.query.filter_by(id=pk).first()
+        return render_template("detail.html", route=route)
 
     return app
 
@@ -47,7 +33,8 @@ def create_app():
 def register_admin_views(admin):
     admin.add_view(RouteImageView(Route, db.session))
     admin.add_view(CoordinateModelView(Coordinate, db.session))
-
+    admin.add_view(DetailModelView(Detail, db.session))
+    admin.add_view(VisualModelView(Visual, db.session))
 
 
 def register_extensions(app):
