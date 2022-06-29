@@ -2,8 +2,7 @@
 {% block content %}
 
 
-
-<div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+<div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="000">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -40,9 +39,6 @@
 
   </div>
 </section>
-  
-
-
 
 <div class="grid-posts">
     <div class="container">
@@ -53,7 +49,7 @@
               <img src="{{ url_for('static', filename=thumbnail(maps_routes.image)) }}" class="card-img-top" alt="{{ maps_routes.title }}">
               <div class="card-body">
                 <h5 class="post-title">{{ maps_routes.title }}</h5>
-                <p class="card-text">{{ maps_routes.description }}</p>
+                <p class="card-text">{{ maps_routes.description|truncate(64)|safe }}</p>
                 <a href="{{ url_for('detail', pk=maps_routes.id) }}" class="btn btn-primary">Подробнее</a>
               </div>
             </div>
@@ -63,12 +59,5 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
 
 {% endblock %}

@@ -1,0 +1,76 @@
+body {
+    min-width: 320px;
+    font-size: 14px;
+    font-family: 'Merriweather', serif;
+    color: #626262;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: #686f6e;
+}
+
+a:hover {
+    color: #898377;
+}
+
+header.navbar-light {
+    background-color: #fff ;
+}
+
+header .navbar-brand {
+    font-family:'Inconsolata', monospace;
+    font-size: 30px;
+    color: #000;
+    text-transform: uppercase;
+}
+
+header .nav-item {
+    text-transform: uppercase;
+    margin-left: 50px;
+}
+
+header .nav-item a::after {
+    content: '';
+    display: block;
+    width: 100%;
+    background-color: #ccc;
+    height: 1px;
+    transform: scale(0);
+    transition: all .3s;
+}
+
+header .nav-item a:hover::after {
+    transform: scale(1);
+}
+
+.grid-posts {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.grid-posts .card {
+    border: 0;
+    margin-bottom: 100px;
+}
+
+.grid-posts .card-body {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
+.carousel-inner img {
+    display: block;
+    width: 400px;
+    height: 600px ;
+    margin: 0 auto;
+}
+
+.signup {
+    margin-top: 100px;
+}
