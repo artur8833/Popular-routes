@@ -1,6 +1,4 @@
-from http.client import NOT_FOUND
-from xml.dom import NotFoundErr
-from click import style
+import app
 from flask import Flask, render_template
 from webapp.model import Route, Coordinate
 from webapp.extensions import db, migrate
@@ -38,7 +36,7 @@ def create_app():
         coordinates = Coordinate.query.filter_by(route_id=pk).all()
         start_location=next(iter(coordinates))
         if not start_location:
-            raise NOT_FOUND
+            raise NotFound
         
         folium_map=folium.Map(location=[start_location.latitude, start_location.longitude],
         zoom_start=10,
