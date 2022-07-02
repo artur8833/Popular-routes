@@ -43,7 +43,7 @@ class Detail(db.Model):
 
 class Visual(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    img = db.Column(db.Unicode(128), nullable=False)
+    image = db.Column(db.Unicode(128), nullable=False)
     title = db.Column(db.String(80), nullable=False)
     body = db.Column(db.Text(), nullable=False)
     route_id = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)

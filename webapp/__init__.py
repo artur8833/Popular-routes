@@ -34,13 +34,13 @@ def create_app():
         start_location = next(iter(coordinates))
         if not start_location:
             raise 'NotFound'
-        
-        folium_map=folium.Map(location=[start_location.latitude, start_location.longitude],
-                            zoom_start=10,
-                            width=1000,
-                            height=600,
-                            left=200,
-                            top=80)
+
+        folium_map = folium.Map(location=[start_location.latitude, start_location.longitude],
+                                zoom_start=10,
+                                width=1000,
+                                height=600,
+                                left=200,
+                                top=80)
 
         loc=[]
         with open('webapp/bzerp.json') as f:
@@ -65,22 +65,23 @@ def create_app():
         title = '<h2>Кемпинг<h2/>'
         picture = base64.b64encode(open('./webapp/static/palatka/ko.png', 'rb').read()).decode()
         html = f'{title}<img src="data:image/JPG;base64,{picture}">'
-        iframe = IFrame(html, width=632+20, height=420+20)
+        iframe = IFrame(html, width=632 + 20, height=420 + 20)
         popup = folium.Popup(iframe, max_width=1000)
 
         folium.Marker(
-        location=[43.6949, 40.3554],
-        popup=popup,
-        icon=folium.Icon(icon='glyphicon-home', color="red"),
-        draggable=False).add_to(folium_map)
+            location=[43.6949, 40.3554],
+            popup=popup,
+            icon=folium.Icon(icon='glyphicon-home', color="red"),
+            draggable=False).add_to(folium_map)
 
         folium.Marker(location=[start_location.latitude, start_location.longitude],
-        popup="Начало маршрута",
-        icon=folium.Icon(icon='info-sign', color="red"),
-        draggable=False).add_to(folium_map)
+                      popup="Начало маршрута",
+                      icon=folium.Icon(icon='info-sign', color="red"),
+                      draggable=False).add_to(folium_map)
 
         maps_routes = Route.query.filter_by(id=pk).first()
-        return render_template("detail.html", maps_routes=maps_routes ,folium_map=folium_map._repr_html_())
+        detail_routes = Detail.query.filter_by(id=pk).first()
+        return render_template("detail.html", maps_routes=maps_routes, detail_routes=detail_routes, thumbnail=form.thumbgen_filename, folium_map=folium_map._repr_html_())
 
     return app
 

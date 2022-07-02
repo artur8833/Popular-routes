@@ -3,24 +3,23 @@
 {% block title %}
 {{ maps_routes.title }}
 {% endblock %}
-
 {% block content %}
-<a href="{{ url_for('index') }}">Вернуться к списку маршрутов</a>
-<h1>{{ maps_routes.title }}</h1>
-<body>
 <div class="container text-center">
+    <h1>{{ maps_routes.title }}</h1>
     <h1 class="h3 mt-5 mb-1">Фото Агурские водопады</h1>
     <h2 class="lead mt-0 mb-5"></h2>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"/>
 
-{% include 'carousel.html' %}
+  {% include 'carousel.html' %}
+
+
+
+{{ maps_routes.description|safe }}
+    {{ detail_routes.description|safe }}
 
 {% block map %} {{folium_map|safe}} {% endblock %}
-</body>
-
-<p>{{ maps_routes.description|safe }}</p>
 
 {% endblock %}
 
