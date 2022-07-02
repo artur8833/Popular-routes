@@ -1,13 +1,15 @@
 from flask import Flask, render_template
-from webapp.model import Route, Coordinate, Detail, Visual
+from webapp.model import Route, Coordinate, Detail, Visual,Way
 from webapp.extensions import db, migrate
-from webapp.admin import RouteImageView, form, CoordinateModelView, DetailModelView, VisualModelView
+from webapp.admin import RouteImageView, form, CoordinateModelView, DetailModelView, VisualModelView,WayView
 from flask_admin import Admin
 from webapp.weather import weather_by_city
 import folium
 from folium.plugins import MarkerCluster
 from folium import IFrame
 import base64
+import json
+
 
 
 def create_app():
@@ -40,7 +42,27 @@ def create_app():
                             left=200,
                             top=80)
 
-        title = '<h2>Начало маршрута<h2/>'
+        loc=[]
+        with open('webapp/bzerp.json') as f:
+            coordinate_for_json = json.load(f)
+            for section, commands in coordinate_for_json.items():
+                geometry=commands[0]
+        spisok_coordinate=geometry['geometry']['coordinates']
+
+        for coordanate in spisok_coordinate:
+            longitude_for_route=coordanate[0]
+            latitude_for_route=coordanate[1]
+            loc.append((latitude_for_route, longitude_for_route))
+
+        polyline_options= {
+            'color': 'red',
+            'weight': 5,
+            'opacity': 0.8,
+        }
+        
+        folium.PolyLine(loc, **polyline_options).add_to(folium_map)
+
+        title = '<h2>Кемпинг<h2/>'
         picture = base64.b64encode(open('./webapp/static/palatka/ko.png', 'rb').read()).decode()
         html = f'{title}<img src="data:image/JPG;base64,{picture}">'
         iframe = IFrame(html, width=632+20, height=420+20)
@@ -68,9 +90,11 @@ def register_admin_views(admin):
     admin.add_view(CoordinateModelView(Coordinate, db.session))
     admin.add_view(DetailModelView(Detail, db.session))
     admin.add_view(VisualModelView(Visual, db.session))
+    admin.add_view(WayView(Way, db.session))
 
 
 def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db)
     return None
+

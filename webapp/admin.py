@@ -5,6 +5,18 @@ from flask_admin import form
 from markupsafe import Markup
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
+import json
+from webapp.extensions import db
+from sqlalchemy.ext import mutable
+from flask_admin.model import typefmt
+
+
+def json_formatter(view, value):
+    json_value = json.dumps(value, ensure_ascii=False, indent=2)
+    return Markup('<pre>{}</pre>'.format(json_value))
+
+MY_FORMATTERS = typefmt.BASE_FORMATTERS.copy()
+MY_FORMATTERS[dict] = json_formatter
 
 
 file_path = os.path.join(os.path.dirname(__file__), 'static')
@@ -121,3 +133,43 @@ class VisualModelView(ModelView):
     form_overrides = {
         'description': CKTextAreaField,
     }
+
+
+class JsonEncodedDict(db.TypeDecorator):
+
+    impl = db.Text
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return '{}'
+        else:
+            return json.dumps(value)
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return {}
+        else:
+            return json.loads(value)
+
+mutable.MutableDict.associate_with(JsonEncodedDict)
+
+
+class WayView(ModelView):
+    column_type_formatters = MY_FORMATTERS
+
+    def _list_thumbnail(view, context, model, name):
+        if not model.path:
+            return ''
+        filename = form.thumbgen_filename(model.path)
+        url = url_for('static/json', filename=filename)
+        return Markup(f'<img src="{url}">')
+
+    column_formatters = {
+        'path': _list_thumbnail
+    }
+
+    form_overrides = {
+        'description': CKTextAreaField,
+    }
+
+
