@@ -6,7 +6,6 @@ from markupsafe import Markup
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
 
-
 file_path = os.path.join(os.path.dirname(__file__), 'static')
 try:
     os.mkdir(file_path)
@@ -34,6 +33,7 @@ class RouteImageView(ModelView):
     def _list_thumbnail(view, context, model, name):
         if not model.path:
             return ''
+
         filename = form.thumbgen_filename(model.path)
         url = url_for('static', filename=filename)
         return Markup(f'<img src="{url}">')
@@ -102,6 +102,7 @@ class VisualModelView(ModelView):
     def _list_thumbnail(view, context, model, name):
         if not model.path:
             return ''
+
         filename = form.thumbgen_filename(model.path)
         url = url_for('static', filename=filename)
         return Markup(f'<img src="{url}">')
