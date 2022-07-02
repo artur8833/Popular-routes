@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from webapp.model import Route, Coordinate, Detail, Visual,Way
 from webapp.extensions import db, migrate
 from webapp.admin import RouteImageView, form, CoordinateModelView, DetailModelView, VisualModelView,WayView
@@ -27,6 +27,28 @@ def create_app():
         map_rout = Route.query.all()
         weather = weather_by_city("Sochi, Russia")
         return render_template("index.html", map_rout=map_rout, thumbnail=form.thumbgen_filename, weather=weather)
+
+
+    
+    @app.route('/create', methods=['GET', 'POST'])
+    def index():
+        if request.method == 'POST':
+            my_img = request.files['my-img']
+            post = Coordinate()
+            file_upload.save_files(post, files={ 'image': my_img })
+            db.session.add(post)
+            db.session.commit()
+        posts = Coordinate.query.all()
+        return render_template('create.html', **locals())
+
+    @app.route('/media/<path:filename>')
+    def media(filename):
+        return send_from_directory(
+            app.config['UPLOAD_FOLDER'],
+            filename,
+            as_attachment=True
+        )
+
 
     @app.route('/<int:pk>')
     def detail(pk):
@@ -75,15 +97,17 @@ def create_app():
             draggable=False).add_to(folium_map)
 
         folium.Marker(location=[start_location.latitude, start_location.longitude],
-                      popup="Начало маршрута",
-                      icon=folium.Icon(icon='info-sign', color="red"),
-                      draggable=False).add_to(folium_map)
+                    popup="Начало маршрута",
+                    icon=folium.Icon(icon='info-sign', color="red"),
+                    draggable=False).add_to(folium_map)
 
         maps_routes = Route.query.filter_by(id=pk).first()
         detail_routes = Detail.query.filter_by(id=pk).first()
         return render_template("detail.html", maps_routes=maps_routes, detail_routes=detail_routes, thumbnail=form.thumbgen_filename, folium_map=folium_map._repr_html_())
 
     return app
+
+
 
 
 def register_admin_views(admin):

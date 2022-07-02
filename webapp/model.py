@@ -57,5 +57,3 @@ class Way(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     route_id = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
     fancy_name = db.Column(JsonEncodedDict)
-
-
