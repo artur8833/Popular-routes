@@ -6,7 +6,7 @@ from markupsafe import Markup
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
 
-file_path = os.path.join(os.path.dirname(__file__), 'static')
+file_path = os.path.join(os.path.dirname(__file__), 'static', 'media')
 try:
     os.mkdir(file_path)
 except OSError:
@@ -122,3 +122,4 @@ class VisualModelView(ModelView):
     form_overrides = {
         'description': CKTextAreaField,
     }
+

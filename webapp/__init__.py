@@ -5,7 +5,7 @@ from webapp.admin import RouteImageView, form, CoordinateModelView, DetailModelV
 from flask_admin import Admin
 from webapp.weather import weather_by_city
 import folium
-from folium.plugins import MarkerCluster
+
 from folium import IFrame
 import base64
 
@@ -16,7 +16,6 @@ def create_app():
     app.config["FLASK_ADMIN_SWATCH"] = 'cerulean'
     app.config['SECRET_KEY'] = '123456'
     register_extensions(app)
-
     admin = Admin(app, name='map_rout', template_mode='bootstrap4')
     register_admin_views(admin)
 
@@ -59,7 +58,28 @@ def create_app():
 
         maps_routes = Route.query.filter_by(id=pk).first()
         detail_routes = Detail.query.filter_by(id=pk).first()
-        return render_template("detail.html", maps_routes=maps_routes, detail_routes=detail_routes, thumbnail=form.thumbgen_filename, folium_map=folium_map._repr_html_())
+        visual_routes = Visual.query.all()
+        return render_template("detail.html", maps_routes=maps_routes, visual_routes=visual_routes, detail_routes=detail_routes, thumbnail=form.thumbgen_filename, folium_map=folium_map._repr_html_())
+
+
+    @app.route('/create', methods=['GET', 'POST'])
+    def index():
+        if request.method == 'POST':
+            my_img = request.files['my-img']
+            post = Post()
+            file_upload.save_files(post, files={'image': my_img})
+            db.session.add(post)
+            db.session.commit()
+        posts = Post.query.all()
+        return render_template('create.html', **locals())
+
+    @app.route('/media/<path:filename>')
+    def media(filename):
+        return send_from_directory(
+            app.config['UPLOAD_FOLDER'],
+            filename,
+            as_attachment=True
+        )
 
     return app
 
