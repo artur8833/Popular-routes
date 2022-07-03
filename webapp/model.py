@@ -1,5 +1,4 @@
 from webapp.extensions import db
-from webapp.admin import JsonEncodedDict
 
 
 class Route(db.Model):
@@ -10,7 +9,6 @@ class Route(db.Model):
     coordinates = db.relationship('Coordinate', backref='route', lazy=True)
     detail = db.relationship('Detail', backref='route', lazy=True)
     visuals = db.relationship('Visual', backref='route', lazy=True)
-    way=db.relationship('Way', backref='route', lazy=True)
 
     def __repr__(self):
         return f'<Route {self.title}>'
@@ -50,10 +48,3 @@ class Visual(db.Model):
 
     def __repr__(self):
         return f'<Visual {self.title}>'
-
-
-class Way(db.Model):
-    __tablename__ = 'way'
-    id = db.Column(db.Integer, primary_key=True)
-    route_id = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
-    fancy_name = db.Column(JsonEncodedDict)

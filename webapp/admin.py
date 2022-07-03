@@ -18,7 +18,7 @@ def json_formatter(view, value):
 MY_FORMATTERS = typefmt.BASE_FORMATTERS.copy()
 MY_FORMATTERS[dict] = json_formatter
 
-file_path = os.path.join(os.path.dirname(__file__), 'static')
+file_path = os.path.join(os.path.dirname(__file__), 'static', 'media')
 try:
     os.mkdir(file_path)
 except OSError:
@@ -58,6 +58,7 @@ class RouteImageView(ModelView):
         'image': form.ImageUploadField(
             'Image',
             base_path=file_path,
+            url_relative_path='media/',
             thumbnail_size=(320, 240, True),
         )
     }
@@ -136,41 +137,5 @@ class VisualModelView(ModelView):
     }
 
 
-class JsonEncodedDict(db.TypeDecorator):
-
-    impl = db.Text
-
-    def process_bind_param(self, value, dialect):
-        if value is None:
-            return '{}'
-        else:
-            return json.dumps(value)
-
-    def process_result_value(self, value, dialect):
-        if value is None:
-            return {}
-        else:
-            return json.loads(value)
-
-mutable.MutableDict.associate_with(JsonEncodedDict)
-
-
-class WayView(ModelView):
-    column_type_formatters = MY_FORMATTERS
-
-    def _list_thumbnail(view, context, model, name):
-        if not model.path:
-            return ''
-        filename = form.thumbgen_filename(model.path)
-        url = url_for('static/json', filename=filename)
-        return Markup(f'<img src="{url}">')
-
-    column_formatters = {
-        'path': _list_thumbnail
-    }
-
-    form_overrides = {
-        'description': CKTextAreaField,
-    }
-
-
+def image_path(self):
+    return f'media/{form.thumbgen_filename(self.image)}'
