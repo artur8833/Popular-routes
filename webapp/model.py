@@ -1,14 +1,18 @@
 from webapp.extensions import db
+from flask_admin import form
 
 
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), nullable=False)
-    description = db.Column(db.Text(), nullable=False)
-    image = db.Column(db.Unicode(128), nullable=False)
+    title = db.Column(db.String(80), nullable=True)
+    description = db.Column(db.Text(), nullable=True)
+    image = db.Column(db.Unicode(128), nullable=True)
     coordinates = db.relationship('Coordinate', backref='route', lazy=True)
     detail = db.relationship('Detail', backref='route', lazy=True)
     visuals = db.relationship('Visual', backref='route', lazy=True)
+    
+    def image_path(self):
+        return f'media/{form.thumbgen_filename(self.image)}'
 
     def __repr__(self):
         return f'<Route {self.title}>'
@@ -19,7 +23,6 @@ class Coordinate(db.Model):
     route_id = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
-    altitude = db.Column(db.Float, nullable=False)
     order = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
@@ -45,6 +48,9 @@ class Visual(db.Model):
     title = db.Column(db.String(80), nullable=False)
     body = db.Column(db.Text(), nullable=False)
     route_id = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
+    
+    def image_path(self):
+        return f'media/{form.thumbgen_filename(self.image)}'
 
     def __repr__(self):
         return f'<Visual {self.title}>'

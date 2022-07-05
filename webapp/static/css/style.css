@@ -85,9 +85,9 @@ header .nav-item a:hover::after {
 
 .post-category {
     font-family: 'Ubuntu', 'sans-serif';
-    front-siz: 14px;
+    font-size: 14px;
     color: #b4ad9e;
-    text-transform: uppercase:
+    text-transform: uppercase;
     font-weight: 300;
 }
 

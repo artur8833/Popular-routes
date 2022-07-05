@@ -2,8 +2,8 @@ from flask import Flask, render_template, request, flash, redirect, url_for, sen
 from webapp.model import Route, Coordinate, Detail, Visual
 from webapp.extensions import db, migrate
 from webapp.config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
-from webapp.admin import RouteImageView, form, CoordinateModelView, DetailModelView, VisualModelView
-from flask_admin import Admin
+from webapp.admin import RouteImageView, CoordinateModelView, DetailModelView, VisualModelView
+from flask_admin import Admin, form
 from webapp.weather import weather_by_city
 import folium
 from folium.plugins import MarkerCluster
@@ -29,13 +29,13 @@ def create_app():
     admin = Admin(app, name='map_rout', template_mode='bootstrap4')
     register_admin_views(admin)
 
-    @app.route('/')
+    @app.route('/') 
     def index():
         map_rout = Route.query.all()
         weather = weather_by_city("Sochi, Russia")
         return render_template("index.html", map_rout=map_rout, thumbnail=form.thumbgen_filename, weather=weather)
 
-    @app.route('/load', methods=['GET', 'POST'])
+    @app.route('/loa', methods=['GET', 'POST'])
     def upload_file():
         if request.method == 'POST':
             if 'file' not in request.files:
@@ -45,49 +45,49 @@ def create_app():
             if file.filename == '':
                 flash('Нет выбранного файла')
                 return redirect(request.url)
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                with open('webapp/<name>') as f:
-                    coordinate_for_json=f.readline()
-                    coordinate_for_json_2=json.load(coordinate_for_json)
+            if file:
 
+                read_file = file.read().decode('utf-8')
+                coordinate_for_file = json.loads(read_file)
+                route = next(iter(coordinate_for_file.get("features",[])), None)
+                route_properties = route.get("properties",{})
+                route_title = route_properties.get("name")
+                route_coordinates = route.get('geometry',{}).get('coordinates',[])
+
+                route=Route.query.first()
+
+                for position, coordinates in enumerate(route_coordinates):
+                    coordinates=Coordinate(
+                        latitude=coordinates[1],
+                        longitude=coordinates[0],
+                        route_id=route.id,
+                        order=position
+                    )
+                    db.session.add(coordinates)
+                db.session.commit()
         return render_template("download.html")
 
 
     @app.route('/<int:pk>')
     def detail(pk):
         coordinates = Coordinate.query.filter_by(route_id=pk).all()
-        start_location = next(iter(coordinates))
-        if not start_location:
-            raise 'NotFound'
+        
+        loc=[(c.latitude, c.longitude) for c in coordinates]
 
-        folium_map = folium.Map(location=[start_location.latitude, start_location.longitude],
+        folium_map = folium.Map(location=loc[1],
                                 zoom_start=10,
                                 width=1000,
                                 height=600,
                                 left=200,
                                 top=80)
 
-        loc=[]
-        with open('webapp/<name>') as f:
-            coordinate_for_json=f.readline()
-            coordinate_for_json_2=json.load(coordinate_for_json)
-            #coordinate_for_json = json.load(f)
-            for section, commands in coordinate_for_json.items():
-                geometry=commands[0]
-        spisok_coordinate=geometry['geometry']['coordinates']
-
-        for coordanate in spisok_coordinate:
-            longitude_for_route=coordanate[0]
-            latitude_for_route=coordanate[1]
-            loc.append((latitude_for_route, longitude_for_route))
-
-        polyline_options= {
+        
+        polyline_options= { 
             'color': 'red',
             'weight': 5,
             'opacity': 0.8,
         }
-        
+
         folium.PolyLine(loc, **polyline_options).add_to(folium_map)
 
         title = '<h2>Кемпинг<h2/>'
@@ -102,18 +102,16 @@ def create_app():
             icon=folium.Icon(icon='glyphicon-home', color="red"),
             draggable=False).add_to(folium_map)
 
-        folium.Marker(location=[start_location.latitude, start_location.longitude],
+        folium.Marker(location=loc[1],
                     popup="Начало маршрута",
                     icon=folium.Icon(icon='info-sign', color="red"),
                     draggable=False).add_to(folium_map)
 
         maps_routes = Route.query.filter_by(id=pk).first()
         detail_routes = Detail.query.filter_by(id=pk).first()
-        return render_template("detail.html", maps_routes=maps_routes, detail_routes=detail_routes, thumbnail=form.thumbgen_filename, folium_map=folium_map._repr_html_())
+        return render_template("detail.html", maps_routes=maps_routes, detail_routes=detail_routes, folium_map=folium_map._repr_html_())
 
     return app
-
-
 
 
 def register_admin_views(admin):

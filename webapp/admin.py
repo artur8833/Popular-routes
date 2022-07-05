@@ -1,7 +1,6 @@
 import os
 from flask_admin.contrib.sqla import ModelView
 from flask import url_for
-from flask_admin import form
 from markupsafe import Markup
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
@@ -9,6 +8,7 @@ import json
 from webapp.extensions import db
 from sqlalchemy.ext import mutable
 from flask_admin.model import typefmt
+from flask_admin import form
 
 
 def json_formatter(view, value):
@@ -128,6 +128,7 @@ class VisualModelView(ModelView):
         'image': form.ImageUploadField(
             'Image',
             base_path=file_path,
+            url_relative_path='media/',
             thumbnail_size=(520, 520, True),
         )
     }
@@ -137,5 +138,3 @@ class VisualModelView(ModelView):
     }
 
 
-def image_path(self):
-    return f'media/{form.thumbgen_filename(self.image)}'
