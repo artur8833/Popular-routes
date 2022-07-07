@@ -5,18 +5,7 @@ from flask_admin import form
 from markupsafe import Markup
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
-import json
-from webapp.extensions import db
-from sqlalchemy.ext import mutable
-from flask_admin.model import typefmt
 
-
-def json_formatter(view, value):
-    json_value = json.dumps(value, ensure_ascii=False, indent=2)
-    return Markup('<pre>{}</pre>'.format(json_value))
-
-MY_FORMATTERS = typefmt.BASE_FORMATTERS.copy()
-MY_FORMATTERS[dict] = json_formatter
 
 file_path = os.path.join(os.path.dirname(__file__), 'static', 'media')
 try:
@@ -26,7 +15,6 @@ except OSError:
 
 
 class CKTextAreaWidget(TextArea):
-
     def __call__(self, field, **kwargs):
         if kwargs.get('class'):
             kwargs['class'] += ' ckeditor'
@@ -40,7 +28,7 @@ class CKTextAreaField(TextAreaField):
 
 
 class RouteImageView(ModelView):
-    extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
+    extra_js = ['/static/js/ckeditor.js', '/static/js/admin.js']
 
     def _list_thumbnail(view, context, model, name):
         if not model.path:
@@ -128,6 +116,7 @@ class VisualModelView(ModelView):
         'image': form.ImageUploadField(
             'Image',
             base_path=file_path,
+            url_relative_path='media/',
             thumbnail_size=(520, 520, True),
         )
     }
@@ -137,5 +126,3 @@ class VisualModelView(ModelView):
     }
 
 
-def image_path(self):
-    return f'media/{form.thumbgen_filename(self.image)}'

@@ -1,4 +1,6 @@
+from webapp.admin import  form
 from webapp.extensions import db
+from flask import Flask,  send_from_directory
 
 
 class Route(db.Model):
@@ -9,6 +11,10 @@ class Route(db.Model):
     coordinates = db.relationship('Coordinate', backref='route', lazy=True)
     detail = db.relationship('Detail', backref='route', lazy=True)
     visuals = db.relationship('Visual', backref='route', lazy=True)
+
+    @property
+    def image_path(self):
+        return f'media/{form.thumbgen_filename(self.image)}'
 
     def __repr__(self):
         return f'<Route {self.title}>'
@@ -46,5 +52,15 @@ class Visual(db.Model):
     body = db.Column(db.Text(), nullable=False)
     route_id = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
 
+    @property
+    def image_path(self):
+        return f'media/{form.thumbgen_filename(self.image)}'
+
     def __repr__(self):
-        return f'<Visual {self.title}>'
+        return f'<Visual {self.image}>'
+
+
+
+
+
+

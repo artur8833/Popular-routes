@@ -151,3 +151,19 @@ header .nav-item a:hover::after {
   margin-bottom:0;
 }
 
+.embedly-card-hug {
+  position: relative !important;
+  padding-bottom: 58.6% !important;
+  height: 0 !important;
+  margin: 10px 0 !important;
+  overflow: hidden !important;
+  max-width: none !important;
+}
+
+.embedly-card-hug iframe {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
