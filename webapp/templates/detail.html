@@ -4,6 +4,10 @@
 {{ maps_routes.title }}
 {% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
 {% block content %}
     <div class="container text-center">
     <h1>{{ maps_routes.title }}</h1>
@@ -12,11 +16,14 @@
     {% include 'carousel.html' %}
     {{ maps_routes.description|safe }}
     {{ detail_routes.description|safe }}
-
-{% block map %} {{folium_map|safe}} {% endblock %}
-
+    {% block map %} {{folium_map|safe}} {% endblock %}
+</div>
 {% endblock %}
-
-
-
+{% block script %}
+<script async charset="utf-8" src="//cdn.embedly.com/widgets/platform.js"></script>
+<script src="{{ url_for('static', filename='js/detail.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+{% endblock %}
 

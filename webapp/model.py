@@ -1,3 +1,4 @@
+from webapp.admin import  form
 from webapp.extensions import db
 from flask_admin import form
 
@@ -12,6 +13,10 @@ class Route(db.Model):
     visuals = db.relationship('Visual', backref='route', lazy=True)
     coordinateformap =  db.relationship('Coordinateformap', backref='route', lazy=True)
     
+    @property
+    def image_path(self):
+        return f'media/{form.thumbgen_filename(self.image)}'
+
     @property
     def image_path(self):
         return f'media/{form.thumbgen_filename(self.image)}'
@@ -54,6 +59,10 @@ class Visual(db.Model):
     body = db.Column(db.Text(), nullable=False)
     route_id = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
     
+    @property
+    def image_path(self):
+        return f'media/{form.thumbgen_filename(self.image)}'
+
     @property
     def image_path(self):
         return f'media/{form.thumbgen_filename(self.image)}'

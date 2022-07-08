@@ -2,12 +2,10 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
 from webapp.model import Route, Coordinate, Detail, Visual, Coordinateformap
 from webapp.extensions import db, migrate
-from webapp.config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 from webapp.admin import RouteImageView, CoordinateModelView, DetailModelView, VisualModelView, CoordinateformapModelView
 from flask_admin import Admin, form
 from webapp.weather import weather_by_city
 import folium
-from folium.plugins import MarkerCluster
 from folium import IFrame
 import base64
 import json
@@ -16,18 +14,12 @@ import os
 from pathlib import Path
 
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
     app.config["FLASK_ADMIN_SWATCH"] = 'cerulean'
     app.config['SECRET_KEY'] = '123456'
-    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     register_extensions(app)
-
     admin = Admin(app, name='map_rout', template_mode='bootstrap4')
     register_admin_views(admin)
 
