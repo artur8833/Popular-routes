@@ -3,20 +3,14 @@
 {% block title %}
 {{ maps_routes.title }}
 {% endblock %}
+
 {% block content %}
-<div class="container text-center">
+    <div class="container text-center">
     <h1>{{ maps_routes.title }}</h1>
     <h1 class="h3 mt-5 mb-1">Фото Агурские водопады</h1>
     <h2 class="lead mt-0 mb-5"></h2>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"/>
-
-  {% include 'carousel.html' %}
-
-
-
-{{ maps_routes.description|safe }}
+    {% include 'carousel.html' %}
+    {{ maps_routes.description|safe }}
     {{ detail_routes.description|safe }}
 
 {% block map %} {{folium_map|safe}} {% endblock %}

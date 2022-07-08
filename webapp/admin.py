@@ -137,4 +137,24 @@ class VisualModelView(ModelView):
         'description': CKTextAreaField,
     }
 
+class CoordinateformapModelView(ModelView):
 
+    def _list_thumbnail(view, context, model, name):
+        if not model.path:
+            return ''
+        filename = form.thumbgen_filename(model.path)
+        url = url_for('static', filename=filename)
+        return Markup(f'<img src="{url}">')
+
+    column_formatters = {
+        'path': _list_thumbnail
+    }
+
+    form_extra_fields = {
+    'image_for_map': form.ImageUploadField(
+        'Image',
+        base_path=file_path,
+        url_relative_path='media/',
+        thumbnail_size=(520, 520, True),
+    )
+}
