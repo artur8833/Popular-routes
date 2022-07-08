@@ -48,7 +48,6 @@ def create_app():
                 flash('Нет выбранного файла')
                 return redirect(request.url)
             if file:
-
                 read_file = file.read().decode('utf-8')
                 coordinate_for_file = json.loads(read_file)
                 route = next(iter(coordinate_for_file.get("features",[])), None)
