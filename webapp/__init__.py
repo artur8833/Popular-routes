@@ -1,15 +1,12 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
-from webapp.model import Route, Coordinate, Detail, Visual
-from webapp.extensions import db, migrate
-from webapp.admin import RouteImageView, form, CoordinateModelView, DetailModelView, VisualModelView
+from flask import Flask, render_template
 from flask_admin import Admin
+from flask_login import LoginManager
+from webapp.admin import RouteImageView, form, CoordinateModelView, DetailModelView, VisualModelView
+from webapp.extensions import db, migrate
+from webapp.model import Route, Coordinate, Detail, Visual
+from webapp.user.model import User
+from webapp.user.views import blueprint as user_blueprint
 from webapp.weather import weather_by_city
-import folium
-from folium import IFrame
-import base64
-import json
-from werkzeug.utils import secure_filename
-import os
 
 
 def create_app():
@@ -18,8 +15,16 @@ def create_app():
     app.config["FLASK_ADMIN_SWATCH"] = 'cerulean'
     app.config['SECRET_KEY'] = '123456'
     register_extensions(app)
-    admin = Admin(app, name='map_rout', template_mode='bootstrap4')
+    admin = Admin(app, name='map_rout', template_mode='bootstrap3')
     register_admin_views(admin)
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = 'user.login'
+    app.register_blueprint(user_blueprint)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(user_id)
 
     @app.route('/')
     def index():

@@ -1,6 +1,5 @@
-from webapp.admin import  form
 from webapp.extensions import db
-from flask import Flask,  send_from_directory
+from webapp import form
 
 
 class Route(db.Model):
@@ -54,10 +53,17 @@ class Visual(db.Model):
 
     @property
     def image_path(self):
+        return f'media/{self.image}'
+
+    @property
+    def thumbnail_path(self):
         return f'media/{form.thumbgen_filename(self.image)}'
 
     def __repr__(self):
         return f'<Visual {self.image}>'
+
+
+
 
 
 
