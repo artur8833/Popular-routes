@@ -3,6 +3,8 @@ body {
     font-size: 14px;
     font-family: 'Merriweather', serif;
     color: #626262;
+    margin: 0;
+    padding: 0;
 }
 
 img {
@@ -19,7 +21,7 @@ a:hover {
 }
 
 p {
-    line-height: 1.5rem;
+    line-height: 1.9;
 }
 
 header.navbar-light {
@@ -67,7 +69,6 @@ header .nav-item a:hover::after {
     padding-right: 0;
 }
 
-
 .carousel-inner img {
     display: block;
     width: 400px;
@@ -77,6 +78,7 @@ header .nav-item a:hover::after {
 
 .signup {
     margin-top: 100px;
+    line-height: 1.5;
 }
 
 .slider{
@@ -85,9 +87,9 @@ header .nav-item a:hover::after {
 
 .post-category {
     font-family: 'Ubuntu', 'sans-serif';
-    front-siz: 14px;
+    font-size: 14px;
     color: #b4ad9e;
-    text-transform: uppercase:
+    text-transform: uppercase;
     font-weight: 300;
 }
 
@@ -167,3 +169,33 @@ header .nav-item a:hover::after {
   width: 100%;
   height: 100%;
 }
+
+.signup2{
+  margin-top: 30px;
+  line-height: 1.8;
+  height:2;
+  text-align:left;
+}
+
+
+.box {
+  position: relative;
+  overflow:hidden;
+  width:50px;
+  height:50px;
+  margin-left: 12%;
+  margin-top: 90px;
+}
+
+.box img {
+  position: absolute;
+  top:50%;
+  left:50%;
+
+  transform:translate(-50%,-50%);
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+}
+

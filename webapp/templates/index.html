@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
 {% block content %}
 {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -57,7 +62,7 @@
               <img src="{{ url_for('static', filename=maps_routes.image_path) }}" class="card-img-top" alt="{{ maps_routes.title }}">
               <div class="card-body">
                 <h5 class="post-title">{{ maps_routes.title }}</h5>
-                <p class="card-text">{{ maps_routes.description|truncate(64)|safe }}</p>
+                <p class="card-text">{{ maps_routes.description|safe }}</p>
                 <a href="{{ url_for('detail', pk=maps_routes.id) }}" class="btn btn-primary">Подробнее</a>
               </div>
             </div>
@@ -67,6 +72,7 @@
     </div>
   </div>
 </div>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

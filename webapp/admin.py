@@ -1,10 +1,14 @@
 import os
 from flask_admin.contrib.sqla import ModelView
 from flask import url_for
-from flask_admin import form
 from markupsafe import Markup
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
+import json
+from webapp.extensions import db
+from sqlalchemy.ext import mutable
+from flask_admin.model import typefmt
+from flask_admin import form
 
 
 file_path = os.path.join(os.path.dirname(__file__), 'static', 'media')
@@ -53,7 +57,7 @@ class RouteImageView(ModelView):
     }
 
     form_overrides = {
-        'description': CKTextAreaField,
+        'video': CKTextAreaField,
     }
 
 
@@ -94,7 +98,8 @@ class DetailModelView(ModelView):
     }
 
     form_overrides = {
-        'description': CKTextAreaField,
+        'description_start': CKTextAreaField,
+        'description_basic': CKTextAreaField,
     }
 
 
@@ -126,4 +131,24 @@ class VisualModelView(ModelView):
         'description': CKTextAreaField,
     }
 
+class CoordinateformapModelView(ModelView):
 
+    def _list_thumbnail(view, context, model, name):
+        if not model.path:
+            return ''
+        filename = form.thumbgen_filename(model.path)
+        url = url_for('static', filename=filename)
+        return Markup(f'<img src="{url}">')
+
+    column_formatters = {
+        'path': _list_thumbnail
+    }
+
+    form_extra_fields = {
+    'image_for_map': form.ImageUploadField(
+        'Image',
+        base_path=file_path,
+        url_relative_path='media/',
+        thumbnail_size=(520, 520, True),
+    )
+}
