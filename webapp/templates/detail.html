@@ -1,22 +1,46 @@
 {% extends 'base.html' %}
 
-{% block title %}
-{{ maps_routes.title }}
-{% endblock %}
-
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 {% endblock %}
 
 {% block content %}
     <div class="container text-center">
-    <h1>{{ maps_routes.title }}</h1>
-    <h1 class="h3 mt-5 mb-1">Фото Агурские водопады</h1>
+    <div class="h3 mt-5 mb-1">
     <h2 class="lead mt-0 mb-5"></h2>
     {% include 'carousel.html' %}
-    {{ maps_routes.description|safe }}
-    {{ detail_routes.description|safe }}
+    <section class="signup2">
+        <div class="class-row">
+            <div class="col-lg-9 offset-lg-1">
+                <h6> {{ detail_routes.description_start|safe }}</h6>
+            </div>
+        </div>
+    </div>
+    </section>
+    <div class="col-lg-9 offset-lg-1">
+        {{ maps_routes.video|safe }}
+    </div>
+    <section class="signup2">
+        <div class="class-row">
+            <div class="col-lg-9 offset-lg-1">
+                <h6> {{ detail_routes.description_basic|safe }}</h6>
+            </div>
+        </div>
+    </div>
+    </section>
     {% block map %} {{folium_map|safe}} {% endblock %}
+
+
+
+
+    <div class="box">
+        <img src="static\media\icon.svg">
+        <h6> {{ detail_routes.workingmode|safe }} </h6>
+    </div>
+    <h6> {{ detail_routes.workingmode|safe }} </h6>
+    
+   
+    
 </div>
 {% endblock %}
 {% block script %}

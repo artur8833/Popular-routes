@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
 from webapp.model import Route, Coordinate, Detail, Visual, Coordinateformap
 from webapp.extensions import db, migrate
@@ -67,11 +66,10 @@ def create_app():
         coordinates_for_rout=Coordinateformap.query.filter_by(route_id=pk).all()
 
         loc=[(c.latitude, c.longitude) for c in coordinates]
-
-        loc_image=[(i.longitude_for_image, i.latitude_for_image) for i in coordinates_for_rout ]
+        loc_image=[[i.longitude_for_image, i.latitude_for_image] for i in coordinates_for_rout]
 
         folium_map = folium.Map(location=loc[1],
-                                zoom_start=10,
+                                zoom_start=13,
                                 width=1000,
                                 height=600,
                                 left=200,
@@ -79,25 +77,26 @@ def create_app():
 
         
         polyline_options= { 
-            'color': 'red',
+            'color': 'blue',
             'weight': 5,
             'opacity': 0.8,
         }
 
         folium.PolyLine(loc, **polyline_options).add_to(folium_map)
+
         base_dir=Path(__file__).resolve().parent
         for coordinate_map in coordinates_for_rout:
             image_file = coordinate_map.image_for_map
             image_path = os.path.join(base_dir, 'static', 'media', image_file)
-            title = '<h2>Кемпинг<h2/>'
+            title = f'{coordinate_map.title}'
             picture = base64.b64encode(open(image_path, 'rb').read()).decode()
             html = f'{title}<img src="data:image/JPG;base64,{picture}">'
             iframe = IFrame(html, width=632 + 20, height=420 + 20)
             popup = folium.Popup(iframe, max_width=1000)
 
-            folium.Marker(location=loc_image[0],
+            folium.Marker(location=(coordinate_map.longitude_for_image, coordinate_map.latitude_for_image),
                 popup=popup,
-                icon=folium.Icon(icon='glyphicon-home', color="red"),
+                icon=folium.Icon(icon='info-sign', color="blue"),
                 draggable=False).add_to(folium_map)
 
         folium.Marker(location=loc[0],

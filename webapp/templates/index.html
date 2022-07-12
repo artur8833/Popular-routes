@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
 {% block content %}
 
-<div id="carouselExampleIndicators"  class="carousel vertical" data-ride="carousel"> >
+<div id="carouselExampleIndicators"  class="carousel vertical" data-ride="carousel">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -10,7 +15,6 @@
   <div class="carousel-inner">
     <div class="carousel-item active">
       <img src="static\media\panar1.jpeg" class="d-block w-100" alt="...">
-
     </div>
     <div class="carousel-item">
       <img src="static\media\panar2.jpeg" class="d-block w-100" alt="...">
@@ -36,7 +40,6 @@
         <h4 align="center">Кавказский заповедник — самая большая по территории и старейшая особо охраняемая природная территория на Северном Кавказе. Расположена в пределах трёх субъектов Российской Федерации — Краснодарского края, Республики Адыгея и Карачаево-Черкесской Республики.</h4>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -49,7 +52,7 @@
               <img src="{{ url_for('static', filename=maps_routes.image_path) }}" class="card-img-top" alt="{{ maps_routes.title }}">
               <div class="card-body">
                 <h5 class="post-title">{{ maps_routes.title }}</h5>
-                <p class="card-text">{{ maps_routes.description|truncate(64)|safe }}</p>
+                <p class="card-text">{{ maps_routes.description|safe }}</p>
                 <a href="{{ url_for('detail', pk=maps_routes.id) }}" class="btn btn-primary">Подробнее</a>
               </div>
             </div>

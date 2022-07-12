@@ -56,7 +56,7 @@ class RouteImageView(ModelView):
     }
 
     form_overrides = {
-        'description': CKTextAreaField,
+        'video': CKTextAreaField,
     }
 
 
@@ -97,7 +97,8 @@ class DetailModelView(ModelView):
     }
 
     form_overrides = {
-        'description': CKTextAreaField,
+        'description_start': CKTextAreaField,
+        'description_basic': CKTextAreaField,
     }
 
 

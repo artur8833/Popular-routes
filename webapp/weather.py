@@ -18,5 +18,4 @@ def weather_by_city(city_name):
                     return weather['data']['current_condition'][0]
                 except(IndexError, TypeError):
                     return False
-
     return weather

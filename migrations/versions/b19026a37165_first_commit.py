@@ -1,8 +1,8 @@
-"""First
+"""first commit
 
-Revision ID: 755c5ef04422
+Revision ID: b19026a37165
 Revises: 
-Create Date: 2022-07-06 20:25:39.773871
+Create Date: 2022-07-10 19:57:24.778177
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '755c5ef04422'
+revision = 'b19026a37165'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,6 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=80), nullable=True),
     sa.Column('description', sa.Text(), nullable=True),
+    sa.Column('video', sa.Text(), nullable=True),
     sa.Column('image', sa.Unicode(length=128), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
@@ -39,6 +40,7 @@ def upgrade():
     sa.Column('route_id', sa.Integer(), nullable=False),
     sa.Column('longitude_for_image', sa.Float(), nullable=False),
     sa.Column('latitude_for_image', sa.Float(), nullable=False),
+    sa.Column('title', sa.String(length=80), nullable=True),
     sa.Column('image_for_map', sa.Unicode(length=128), nullable=False),
     sa.Column('order', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['route_id'], ['route.id'], ),
@@ -47,12 +49,11 @@ def upgrade():
     op.create_table('detail',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('route_id', sa.Integer(), nullable=False),
-    sa.Column('description', sa.Text(), nullable=False),
+    sa.Column('description_start', sa.Text(), nullable=False),
+    sa.Column('description_basic', sa.Text(), nullable=False),
     sa.Column('image', sa.Unicode(length=128), nullable=False),
     sa.Column('routestart', sa.Text(), nullable=False),
     sa.Column('workingmode', sa.Text(), nullable=False),
-    sa.Column('longitude_for_pictutre', sa.Float(), nullable=True),
-    sa.Column('latitude_for_picture', sa.Float(), nullable=True),
     sa.Column('order', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['route_id'], ['route.id'], ),
     sa.PrimaryKeyConstraint('id')
