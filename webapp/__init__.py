@@ -1,3 +1,11 @@
+from flask import Flask, render_template
+from flask_admin import Admin
+from flask_login import LoginManager
+from webapp.admin import RouteImageView, form, CoordinateModelView, DetailModelView, VisualModelView
+from webapp.extensions import db, migrate
+from webapp.model import Route, Coordinate, Detail, Visual
+from webapp.user.model import User
+from webapp.user.views import blueprint as user_blueprint
 from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
 from webapp.model import Route, Coordinate, Detail, Visual, Coordinateformap
 from webapp.extensions import db, migrate
@@ -8,7 +16,7 @@ import folium
 from folium import IFrame
 import base64
 import json
-from werkzeug.utils import secure_filename
+
 import os
 from pathlib import Path
 
@@ -19,10 +27,18 @@ def create_app():
     app.config["FLASK_ADMIN_SWATCH"] = 'cerulean'
     app.config['SECRET_KEY'] = '123456'
     register_extensions(app)
-    admin = Admin(app, name='map_rout', template_mode='bootstrap4')
+    admin = Admin(app, name='map_rout', template_mode='bootstrap3')
     register_admin_views(admin)
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = 'user.login'
+    app.register_blueprint(user_blueprint)
 
-    @app.route('/') 
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(user_id)
+
+    @app.route('/')
     def index():
         map_rout = Route.query.all()
         weather = weather_by_city("Sochi, Russia")
@@ -41,15 +57,15 @@ def create_app():
             if file:
                 read_file = file.read().decode('utf-8')
                 coordinate_for_file = json.loads(read_file)
-                route = next(iter(coordinate_for_file.get("features",[])), None)
-                route_properties = route.get("properties",{})
+                route = next(iter(coordinate_for_file.get("features", [])), None)
+                route_properties = route.get("properties", {})
                 route_title = route_properties.get("name")
-                route_coordinates = route.get('geometry',{}).get('coordinates',[])
+                route_coordinates = route.get('geometry', {}).get('coordinates', [])
 
-                route=Route.query.filter_by(id=pk).first()
+                route = Route.query.filter_by(id=pk).first()
 
                 for position, coordinates in enumerate(route_coordinates):
-                    coordinates=Coordinate(
+                    coordinates = Coordinate(
                         latitude=coordinates[1],
                         longitude=coordinates[0],
                         route_id=route.id,
@@ -59,14 +75,12 @@ def create_app():
                 db.session.commit()
         return render_template("download.html")
 
-
     @app.route('/<int:pk>')
     def detail(pk):
         coordinates = Coordinate.query.filter_by(route_id=pk).all()
-        coordinates_for_rout=Coordinateformap.query.filter_by(route_id=pk).all()
+        coordinates_for_rout = Coordinateformap.query.filter_by(route_id=pk).all()
 
-        loc=[(c.latitude, c.longitude) for c in coordinates]
-        
+        loc = [(c.latitude, c.longitude) for c in coordinates]
 
         folium_map = folium.Map(location=loc[1],
                                 zoom_start=13,
@@ -74,16 +88,16 @@ def create_app():
                                 height=600,
                                 top=80)
 
-        
-        polyline_options= { 
+        polyline_options = {
             'color': 'blue',
             'weight': 5,
             'opacity': 0.8,
+
         }
 
         folium.PolyLine(loc, **polyline_options).add_to(folium_map)
 
-        base_dir=Path(__file__).resolve().parent
+        base_dir = Path(__file__).resolve().parent
         for coordinate_map in coordinates_for_rout:
             image_file = coordinate_map.image_for_map
             image_path = os.path.join(base_dir, 'static', 'media', image_file)
@@ -94,20 +108,22 @@ def create_app():
             popup = folium.Popup(iframe, max_width=1000)
 
             folium.Marker(location=(coordinate_map.longitude_for_image, coordinate_map.latitude_for_image),
-                popup=popup,
-                icon=folium.Icon(icon='info-sign', color="blue"),
-                draggable=False).add_to(folium_map)
+                          popup=popup,
+                          icon=folium.Icon(icon='info-sign', color="blue"),
+                          draggable=False).add_to(folium_map)
 
         folium.Marker(location=loc[0],
-                    popup="Начало маршрута",
-                    icon=folium.Icon(icon='info-sign', color="red"),
-                    draggable=False).add_to(folium_map)
+                      popup="Начало маршрута",
+                      icon=folium.Icon(icon='info-sign', color="red"),
+                      draggable=False).add_to(folium_map)
 
         maps_routes = Route.query.filter_by(id=pk).first()
         detail_routes = Detail.query.filter_by(id=pk).first()
-        return render_template("detail.html", maps_routes=maps_routes, detail_routes=detail_routes, folium_map=folium_map._repr_html_())
+        return render_template("detail.html", maps_routes=maps_routes, detail_routes=detail_routes,
+                               folium_map=folium_map._repr_html_())
 
     return app
+
 
 def register_admin_views(admin):
     admin.add_view(RouteImageView(Route, db.session))
@@ -116,8 +132,8 @@ def register_admin_views(admin):
     admin.add_view(VisualModelView(Visual, db.session))
     admin.add_view(CoordinateformapModelView(Coordinateformap, db.session))
 
+
 def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db)
     return None
-

@@ -13,11 +13,13 @@ class Route(db.Model):
     detail = db.relationship('Detail', backref='route', lazy=True)
     visuals = db.relationship('Visual', backref='route', lazy=True)
     coordinateformap =  db.relationship('Coordinateformap', backref='route', lazy=True)
-    
+
     @property
     def image_path(self):
         return f'media/{form.thumbgen_filename(self.image)}'
 
+    def __repr__(self):
+        return f'<Route {self.title}>'
 
 
 class Coordinate(db.Model):
@@ -26,7 +28,6 @@ class Coordinate(db.Model):
     longitude = db.Column(db.Float, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     order = db.Column(db.Integer, nullable=False)
-
 
 
 class Detail(db.Model):
@@ -38,7 +39,6 @@ class Detail(db.Model):
     routestart = db.Column(db.Text(), nullable=False)
     workingmode = db.Column(db.Text(), nullable=False)
     order = db.Column(db.Integer, nullable=False)
-    
 
 
 class Visual(db.Model):
@@ -50,8 +50,14 @@ class Visual(db.Model):
 
     @property
     def image_path(self):
+        return f'media/{self.image}'
+
+    @property
+    def thumbnail_path(self):
         return f'media/{form.thumbgen_filename(self.image)}'
 
+    def __repr__(self):
+        return f'<Visual {self.image}>'
 
 
 class Coordinateformap(db.Model):
@@ -62,3 +68,6 @@ class Coordinateformap(db.Model):
     title = db.Column(db.String(80), nullable=True)
     image_for_map = db.Column(db.Unicode(128), nullable=False)
     order = db.Column(db.Integer, nullable=False)
+
+
+

@@ -5,7 +5,15 @@
 {% endblock %}
 
 {% block content %}
-
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-warning" role="alert">
+        {% for message in messages %}
+            {{ message }}<br>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% endwith %}
 <div id="carouselExampleIndicators"  class="carousel vertical" data-ride="carousel">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -15,6 +23,7 @@
   <div class="carousel-inner">
     <div class="carousel-item active">
       <img src="static\media\panar1.jpeg" class="d-block w-100" alt="...">
+
     </div>
     <div class="carousel-item">
       <img src="static\media\panar2.jpeg" class="d-block w-100" alt="...">
@@ -40,6 +49,7 @@
         <h4 align="center">Кавказский заповедник — самая большая по территории и старейшая особо охраняемая природная территория на Северном Кавказе. Расположена в пределах трёх субъектов Российской Федерации — Краснодарского края, Республики Адыгея и Карачаево-Черкесской Республики.</h4>
       </div>
     </div>
+
   </div>
 </section>
 

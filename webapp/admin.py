@@ -20,6 +20,7 @@ except OSError:
 
 class CKTextAreaWidget(TextArea):
     def __call__(self, field, **kwargs):
+        kwargs['required'] = False
         if kwargs.get('class'):
             kwargs['class'] += ' ckeditor'
         else:

@@ -1,8 +1,8 @@
-"""first commit
+"""First migration
 
-Revision ID: b19026a37165
+Revision ID: 44b95a7f3cb1
 Revises: 
-Create Date: 2022-07-10 19:57:24.778177
+Create Date: 2022-07-12 21:34:23.161535
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b19026a37165'
+revision = '44b95a7f3cb1'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,6 +26,17 @@ def upgrade():
     sa.Column('image', sa.Unicode(length=128), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('user',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('username', sa.String(length=64), nullable=True),
+    sa.Column('email', sa.String(length=128), nullable=True),
+    sa.Column('password', sa.String(length=128), nullable=True),
+    sa.Column('role', sa.String(length=10), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=False)
+    op.create_index(op.f('ix_user_role'), 'user', ['role'], unique=False)
+    op.create_index(op.f('ix_user_username'), 'user', ['username'], unique=True)
     op.create_table('coordinate',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('route_id', sa.Integer(), nullable=False),
@@ -76,5 +87,9 @@ def downgrade():
     op.drop_table('detail')
     op.drop_table('coordinateformap')
     op.drop_table('coordinate')
+    op.drop_index(op.f('ix_user_username'), table_name='user')
+    op.drop_index(op.f('ix_user_role'), table_name='user')
+    op.drop_index(op.f('ix_user_email'), table_name='user')
+    op.drop_table('user')
     op.drop_table('route')
     # ### end Alembic commands ###
