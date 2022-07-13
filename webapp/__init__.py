@@ -66,13 +66,12 @@ def create_app():
         coordinates_for_rout=Coordinateformap.query.filter_by(route_id=pk).all()
 
         loc=[(c.latitude, c.longitude) for c in coordinates]
-        loc_image=[[i.longitude_for_image, i.latitude_for_image] for i in coordinates_for_rout]
+        
 
         folium_map = folium.Map(location=loc[1],
                                 zoom_start=13,
                                 width=1000,
                                 height=600,
-                                left=200,
                                 top=80)
 
         

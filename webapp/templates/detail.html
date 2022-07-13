@@ -24,12 +24,11 @@
         <div class="class-row">
             <div class="col-lg-9 offset-lg-1">
                 <h6> {{ detail_routes.description_basic|safe }}</h6>
+                {{folium_map|safe}}
             </div>
         </div>
     </div>
     </section>
-    {% block map %} {{folium_map|safe}} {% endblock %}
-
 
 
 
