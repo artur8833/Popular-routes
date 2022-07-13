@@ -9,8 +9,7 @@ from webapp.user.views import blueprint as user_blueprint
 from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
 from webapp.model import Route, Coordinate, Detail, Visual, Coordinateformap
 from webapp.extensions import db, migrate
-from webapp.admin import RouteImageView, CoordinateModelView, DetailModelView, VisualModelView, \
-    CoordinateformapModelView
+from webapp.admin import RouteImageView, CoordinateModelView, DetailModelView, VisualModelView, CoordinateformapModelView
 from flask_admin import Admin, form
 from webapp.weather import weather_by_city
 import folium
