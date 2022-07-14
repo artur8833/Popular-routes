@@ -18,9 +18,6 @@ class Route(db.Model):
     def image_path(self):
         return f'media/{form.thumbgen_filename(self.image)}'
 
-    def __repr__(self):
-        return f'<Route {self.title}>'
-
 
 class Coordinate(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -35,7 +32,6 @@ class Detail(db.Model):
     route_id = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
     description_start = db.Column(db.Text(), nullable=False)
     description_basic = db.Column(db.Text(), nullable=False)
-    image = db.Column(db.Unicode(128), nullable=False)
     routestart = db.Column(db.Text(), nullable=False)
     workingmode = db.Column(db.Text(), nullable=False)
     order = db.Column(db.Integer, nullable=False)
@@ -56,9 +52,6 @@ class Visual(db.Model):
     def thumbnail_path(self):
         return f'media/{form.thumbgen_filename(self.image)}'
 
-    def __repr__(self):
-        return f'<Visual {self.image}>'
-
 
 class Coordinateformap(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -68,6 +61,4 @@ class Coordinateformap(db.Model):
     title = db.Column(db.String(80), nullable=True)
     image_for_map = db.Column(db.Unicode(128), nullable=False)
     order = db.Column(db.Integer, nullable=False)
-
-
 

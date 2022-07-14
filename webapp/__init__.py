@@ -6,7 +6,7 @@ from webapp.extensions import db, migrate
 from webapp.model import Route, Coordinate, Detail, Visual
 from webapp.user.model import User
 from webapp.user.views import blueprint as user_blueprint
-from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, flash, redirect
 from webapp.model import Route, Coordinate, Detail, Visual, Coordinateformap
 from webapp.extensions import db, migrate
 from webapp.admin import RouteImageView, CoordinateModelView, DetailModelView, VisualModelView, CoordinateformapModelView
@@ -16,7 +16,6 @@ import folium
 from folium import IFrame
 import base64
 import json
-
 import os
 from pathlib import Path
 
@@ -26,26 +25,31 @@ def create_app():
     app.config.from_pyfile('config.py')
     app.config["FLASK_ADMIN_SWATCH"] = 'cerulean'
     app.config['SECRET_KEY'] = '123456'
+    app.register_blueprint(user_blueprint)
     register_extensions(app)
     admin = Admin(app, name='map_rout', template_mode='bootstrap3')
     register_admin_views(admin)
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'user.login'
-    app.register_blueprint(user_blueprint)
 
     @login_manager.user_loader
+
     def load_user(user_id):
         return User.query.get(user_id)
 
     @app.route('/')
+
     def index():
         map_rout = Route.query.all()
         weather = weather_by_city("Sochi, Russia")
         return render_template("index.html", map_rout=map_rout, thumbnail=form.thumbgen_filename, weather=weather)
 
     @app.route('/load/<int:pk>', methods=['GET', 'POST'])
+
     def upload_file(pk):
+        route = Route.query.filter_by(id=pk).first()
+
         if request.method == 'POST':
             if 'file' not in request.files:
                 flash('Не могу прочитать файл')
@@ -62,24 +66,22 @@ def create_app():
                 route_title = route_properties.get("name")
                 route_coordinates = route.get('geometry', {}).get('coordinates', [])
 
-                route = Route.query.filter_by(id=pk).first()
-
                 for position, coordinates in enumerate(route_coordinates):
-                    coordinates = Coordinate(
-                        latitude=coordinates[1],
-                        longitude=coordinates[0],
-                        route_id=route.id,
-                        order=position
-                    )
+                    coordinates = Coordinate(latitude=coordinates[1],
+                                            longitude=coordinates[0],
+                                            route_id=route.id,
+                                            order=position)
                     db.session.add(coordinates)
                 db.session.commit()
         return render_template("download.html")
 
     @app.route('/<int:pk>')
+    
     def detail(pk):
         coordinates = Coordinate.query.filter_by(route_id=pk).all()
         coordinates_for_rout = Coordinateformap.query.filter_by(route_id=pk).all()
-
+        maps_routes = Route.query.filter_by(id=pk).first()
+        detail_routes = Detail.query.filter_by(id=pk).first()
         loc = [(c.latitude, c.longitude) for c in coordinates]
 
         folium_map = folium.Map(location=loc[1],
@@ -92,8 +94,7 @@ def create_app():
             'color': 'blue',
             'weight': 5,
             'opacity': 0.8,
-
-        }
+            }
 
         folium.PolyLine(loc, **polyline_options).add_to(folium_map)
 
@@ -117,11 +118,10 @@ def create_app():
                       icon=folium.Icon(icon='info-sign', color="red"),
                       draggable=False).add_to(folium_map)
 
-        maps_routes = Route.query.filter_by(id=pk).first()
-        detail_routes = Detail.query.filter_by(id=pk).first()
+
         return render_template("detail.html", maps_routes=maps_routes, detail_routes=detail_routes,
                                folium_map=folium_map._repr_html_())
-
+                               
     return app
 
 

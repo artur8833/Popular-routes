@@ -4,10 +4,6 @@ from flask import url_for
 from markupsafe import Markup
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
-import json
-from webapp.extensions import db
-from sqlalchemy.ext import mutable
-from flask_admin.model import typefmt
 from flask_admin import form
 
 
@@ -38,7 +34,6 @@ class RouteImageView(ModelView):
     def _list_thumbnail(view, context, model, name):
         if not model.path:
             return ''
-
         filename = form.thumbgen_filename(model.path)
         url = url_for('static', filename=filename)
         return Markup(f'<img src="{url}">')
@@ -62,8 +57,7 @@ class RouteImageView(ModelView):
 
 
 class CoordinateModelView(ModelView):
-
-    def _list_thumbnail(view, context, model, name):
+    def _list_thumbnail(view, model):
         if not model.path:
             return ''
         filename = form.thumbgen_filename(model.path)
@@ -89,14 +83,6 @@ class DetailModelView(ModelView):
         'path': _list_thumbnail
     }
 
-    form_extra_fields = {
-        'image': form.ImageUploadField(
-            'Image',
-            base_path=file_path,
-            thumbnail_size=(520, 520, True),
-        )
-    }
-
     form_overrides = {
         'description_start': CKTextAreaField,
         'description_basic': CKTextAreaField,
@@ -109,7 +95,6 @@ class VisualModelView(ModelView):
     def _list_thumbnail(view, context, model, name):
         if not model.path:
             return ''
-
         filename = form.thumbgen_filename(model.path)
         url = url_for('static', filename=filename)
         return Markup(f'<img src="{url}">')
@@ -132,8 +117,7 @@ class VisualModelView(ModelView):
     }
 
 class CoordinateformapModelView(ModelView):
-
-    def _list_thumbnail(view, context, model, name):
+    def _list_thumbnail(view, model):
         if not model.path:
             return ''
         filename = form.thumbgen_filename(model.path)

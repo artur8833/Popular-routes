@@ -30,12 +30,30 @@
     </div>
     </section>
 
-
-
-
-   
-    
+    <div class="box">
+        <img src="static\media\icon.svg">
+    </div>
+    <section class="mapping">
+        <div class="class-row">
+            <div class="col-lg-4 offset-lg-2">
+                <h6> {{ detail_routes.workingmode|safe }} </h6>
+            </div>
+        </div>
+    </div>
 </div>
+<div class="box">
+    <img src="static\media\route_icon.svg">
+</div>
+<section class="mapping">
+    <div class="class-row">
+        <div class="col-lg-4 offset-lg-2">
+            <h6> {{ detail_routes.routestart|safe }} </h6>
+        </div>
+    </div>
+</div>
+</div>
+
+
 {% endblock %}
 {% block script %}
 <script async charset="utf-8" src="//cdn.embedly.com/widgets/platform.js"></script>

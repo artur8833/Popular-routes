@@ -1,5 +1,4 @@
 <header>
-
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
@@ -18,14 +17,24 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">ФОТО</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">ПОГОДА</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" data-toggle="dropdown" class="dropdown-toggle">ПОГОДА<b
+                                    class="caret"></b> </a>
+                            <ul class="dropdown-menu p-4 text-muted" style="max-width: 200px;">
+                                <li><a  href="">{% if weather %}
+                                    Температура в Сочи {{ weather.temp_C }} , Ощущается как {{ weather.FeelsLikeC }}
+                                    {% else %}
+                                    Сервис погоды временно не доступен
+                                    {% endif %}</a></li>
+                            </ul>
                         </li>
-                            {% if current_user.is_authenticated %}
+                        </li>
+                        </li>
+                        {% if current_user.is_authenticated %}
                         <li class="col-md-auto">
                             <span class="nav-link">ПРИВЕТ, {{ current_user.username }}</span>
                         </li>
-                         {% if current_user.is_admin %}
+                        {% if current_user.is_admin %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('admin.index') }}">АДМИНКА</a>
                         </li>
@@ -33,7 +42,7 @@
                         <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('user.logout') }}">ВЫЙТИ</a>
                         </li>
-                         {% else %}
+                        {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('user.register') }}">Авторизация</a>
                         </li>
@@ -46,5 +55,4 @@
             </div>
         </nav>
     </div>
-
 </header>

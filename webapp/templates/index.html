@@ -14,22 +14,34 @@
     </div>
     {% endif %}
 {% endwith %}
+
 <div id="carouselExampleIndicators"  class="carousel vertical" data-ride="carousel">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5" aria-label="Slide 6"></button>
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="static\media\panar1.jpeg" class="d-block w-100" alt="...">
-
+      <img src="static\media\panar4.jpeg" class="d-block w-100" alt="...">
     </div>
     <div class="carousel-item">
       <img src="static\media\panar2.jpeg" class="d-block w-100" alt="...">
     </div>
     <div class="carousel-item">
-      <img src="static\media\panar4.jpeg" class="d-block w-100" alt="...">
+      <img src="static\media\panar3.jpeg" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="static\media\panar1.jpeg" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="static\media\panar5.jpeg" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="static\media\panar6.jpeg" class="d-block w-100" alt="...">
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -41,7 +53,6 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
-
 <section class="signup">
   <div class="class-container">
     <div class="class-row">
@@ -49,10 +60,8 @@
         <h4 align="center">Кавказский заповедник — самая большая по территории и старейшая особо охраняемая природная территория на Северном Кавказе. Расположена в пределах трёх субъектов Российской Федерации — Краснодарского края, Республики Адыгея и Карачаево-Черкесской Республики.</h4>
       </div>
     </div>
-
   </div>
 </section>
-
 <div class="grid-posts">
     <div class="container">
       <div class="row">
@@ -72,7 +81,6 @@
     </div>
   </div>
 </div>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -84,5 +92,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
-
 {% endblock %}
