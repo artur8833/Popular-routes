@@ -1,11 +1,65 @@
 {% extends 'base.html' %}
 
-{% block title %}
-    {{ maps_routes.title }}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 {% endblock %}
 
 {% block content %}
-    <a href="{{ url_for('index') }}">Вернуться к списку маршрутов</a>
-    <h1>{{ maps_routes.title }}</h1>
-    <p>{{ maps_routes.description }}</p>
+    <div class="container text-center">
+    <div class="h3 mt-5 mb-1">
+    <h2 class="lead mt-0 mb-5"></h2>
+    {% include 'carousel.html' %}
+    <section class="signup2">
+        <div class="class-row">
+            <div class="col-lg-9 offset-lg-1">
+                <h6> {{ detail_routes.description_start|safe }}</h6>
+            </div>
+        </div>
+    </div>
+    </section>
+    <div class="col-lg-9 offset-lg-1">
+        {{ maps_routes.video|safe }}
+    </div>
+    <section class="signup2">
+        <div class="class-row">
+            <div class="col-lg-9 offset-lg-1">
+                <h6> {{ detail_routes.description_basic|safe }}</h6>
+                {{folium_map|safe}}
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <div class="box">
+        <img src="static\media\icon.svg">
+    </div>
+    <section class="mapping">
+        <div class="class-row">
+            <div class="col-lg-4 offset-lg-2">
+                <h6> {{ detail_routes.workingmode|safe }} </h6>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box">
+    <img src="static\media\route_icon.svg">
+</div>
+<section class="mapping">
+    <div class="class-row">
+        <div class="col-lg-4 offset-lg-2">
+            <h6> {{ detail_routes.routestart|safe }} </h6>
+        </div>
+    </div>
+</div>
+</div>
+
+
 {% endblock %}
+{% block script %}
+<script async charset="utf-8" src="//cdn.embedly.com/widgets/platform.js"></script>
+<script src="{{ url_for('static', filename='js/detail.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+{% endblock %}
+
