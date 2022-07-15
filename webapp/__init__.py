@@ -48,8 +48,6 @@ def create_app():
     @app.route('/load/<int:pk>', methods=['GET', 'POST'])
 
     def upload_file(pk):
-        route = Route.query.filter_by(id=pk).first()
-
         if request.method == 'POST':
             if 'file' not in request.files:
                 flash('Не могу прочитать файл')
@@ -62,9 +60,8 @@ def create_app():
                 read_file = file.read().decode('utf-8')
                 coordinate_for_file = json.loads(read_file)
                 route = next(iter(coordinate_for_file.get("features", [])), None)
-                route_properties = route.get("properties", {})
-                route_title = route_properties.get("name")
                 route_coordinates = route.get('geometry', {}).get('coordinates', [])
+                route = Route.query.filter_by(id=pk).first()
 
                 for position, coordinates in enumerate(route_coordinates):
                     coordinates = Coordinate(latitude=coordinates[1],
@@ -84,7 +81,7 @@ def create_app():
         detail_routes = Detail.query.filter_by(id=pk).first()
         loc = [(c.latitude, c.longitude) for c in coordinates]
 
-        folium_map = folium.Map(location=loc[1],
+        folium_map = folium.Map(location=loc[2],
                                 zoom_start=13,
                                 width=1000,
                                 height=600,
@@ -121,7 +118,7 @@ def create_app():
 
         return render_template("detail.html", maps_routes=maps_routes, detail_routes=detail_routes,
                                folium_map=folium_map._repr_html_())
-                               
+
     return app
 
 
