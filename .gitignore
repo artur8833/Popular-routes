@@ -74,7 +74,7 @@ db.sqlite3-journal
 
 # Flask stuff:
 instance/
-
+*.db
 # Scrapy stuff:
 .scrapy
 
@@ -389,3 +389,5 @@ fabric.properties
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/flask,python,pycharm,visualstudiocode
+
+static/media/
