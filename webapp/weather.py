@@ -19,9 +19,9 @@ def weather_by_city(city_name):
             if 'current_condition' in weather['data']:
                 try:
                     return weather['data']['current_condition'][0]
-                except(IndexError, TypeError):
+                except (IndexError, TypeError):
                     return False
-    except(requests.RequestException):
+    except (requests.RequestException):
         print('Сетевая ошибка')
         return False
     return False
