@@ -24,7 +24,11 @@
         <div class="class-row">
             <div class="col-lg-9 offset-lg-1">
                 <h6> {{ detail_routes.description_basic|safe }}</h6>
-                {{folium_map|safe}}
+                {% if folium_map %}
+                    {{ folium_map|safe }}
+                {% else %}
+                    карта временно недоступна
+                {% endif %}
             </div>
         </div>
     </div>
@@ -52,7 +56,6 @@
     </div>
 </div>
 </div>
-
 
 {% endblock %}
 {% block script %}

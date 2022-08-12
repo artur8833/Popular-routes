@@ -13,7 +13,8 @@ def login():
         return redirect(url_for('index'))
     title = 'Авторизация'
     login_form = LoginForm()
-    return render_template('user/login.html', page_title=title, form=login_form)
+    return render_template('user/login.html', page_title=title,
+                           form=login_form)
 
 
 @blueprint.route('/process-login', methods=['POST'])
@@ -42,14 +43,16 @@ def register():
         return redirect(url_for('index'))
     form = RegistrationForm()
     title = "Регистрация"
-    return render_template('user/registration.html', page_title=title, form=form)
+    return render_template('user/registration.html',
+                           page_title=title, form=form)
 
 
 @blueprint.route('/process-reg', methods=['POST'])
 def process_reg():
     form = RegistrationForm()
     if form.validate_on_submit():
-        new_user = User(username=form.username.data, email=form.email.data, role='user')
+        new_user = User(username=form.username.data, email=form.email.data,
+                        role='user')
         new_user.set_password(form.password.data)
         db.session.add(new_user)
         db.session.commit()
@@ -57,9 +60,9 @@ def process_reg():
         return redirect(url_for('user.login'))
     else:
         for field, errors in form.errors.items():
-           for error in errors:
-               flash('Ошибка в поле {}: - {}'.format (
+            for error in errors:
+                flash('Ошибка в поле {}: - {}'.format(
                    getattr(form, field).label.text,
                    error
-               ))
+                   ))
         return redirect(url_for('user.register'))
