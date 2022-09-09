@@ -1,7 +1,7 @@
 
 from flask import Blueprint, render_template
 from webapp.description.models import Detail
-from webapp.head.models import Route
+from webapp.home_page.models import Route
 from webapp.description.map import get_map
 
 blueprint = Blueprint('description', __name__)

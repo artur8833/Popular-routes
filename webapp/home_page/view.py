@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template
-from webapp.head.models import Route
+from webapp.home_page.models import Route
 from webapp.weather import weather_by_city
 from flask_admin import form
 
-blueprint = Blueprint('head', __name__)
+blueprint = Blueprint('home_page', __name__)
 
 
 @blueprint.route('/')

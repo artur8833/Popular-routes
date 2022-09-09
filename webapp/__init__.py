@@ -6,10 +6,10 @@ from webapp.user.model import User
 from webapp.user.views import blueprint as user_blueprint
 from webapp.admin import (RouteImageView, CoordinateModelView, DetailModelView,
                           VisualModelView, CoordinateformapModelView)
-from webapp.head.view import blueprint as head_blueprint
-from webapp.load.view import blueprint as load_blueprint
+from webapp.home_page.view import blueprint as head_blueprint
+from webapp.load_traking_routes.view import blueprint as load_blueprint
 from webapp.description.view import blueprint as description_blueprint
-from webapp.head.models import Route
+from webapp.home_page.models import Route
 from webapp.description.models import (Coordinate, Detail, Coordinateformap,
                                        Visual)
 
@@ -23,6 +23,15 @@ def create_app():
     register_extensions(app)
     admin = Admin(app, name='map_rout', template_mode='bootstrap4')
     register_admin_views(admin)
+    register_login(app)
+    app.register_blueprint(head_blueprint)
+    app.register_blueprint(load_blueprint)
+    app.register_blueprint(description_blueprint)
+
+    return app
+
+
+def register_login(app):
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'user.login'
@@ -30,12 +39,6 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(user_id)
-
-    app.register_blueprint(head_blueprint)
-    app.register_blueprint(load_blueprint)
-    app.register_blueprint(description_blueprint)
-
-    return app
 
 
 def register_admin_views(admin):
