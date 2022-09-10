@@ -1,5 +1,5 @@
 from flask import Blueprint, request, flash, redirect, url_for
-from webapp.description.models import Coordinate
+from webapp.route_description.models import Coordinate
 from webapp.home_page.models import Route
 from webapp.extensions import db
 import json

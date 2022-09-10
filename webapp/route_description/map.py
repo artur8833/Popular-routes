@@ -1,4 +1,4 @@
-from webapp.description.models import Coordinate, Coordinateformap
+from webapp.route_description.models import Coordinate, Coordinateformap
 import folium
 from folium import IFrame
 import base64

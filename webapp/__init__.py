@@ -8,9 +8,9 @@ from webapp.admin import (RouteImageView, CoordinateModelView, DetailModelView,
                           VisualModelView, CoordinateformapModelView)
 from webapp.home_page.view import blueprint as head_blueprint
 from webapp.load_traking_routes.view import blueprint as load_blueprint
-from webapp.description.view import blueprint as description_blueprint
+from webapp.route_description.view import blueprint as description_blueprint
 from webapp.home_page.models import Route
-from webapp.description.models import (Coordinate, Detail, Coordinateformap,
+from webapp.route_description.models import (Coordinate, Detail, Coordinateformap,
                                        Visual)
 
 
