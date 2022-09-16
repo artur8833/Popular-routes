@@ -69,7 +69,7 @@ class CoordinateModelView(ModelView):
     }
 
 
-class DetailModelView(ModelView):
+class DescriptionRouteModelView(ModelView):
     extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
 
     def _list_thumbnail(view, model):
@@ -89,7 +89,7 @@ class DetailModelView(ModelView):
     }
 
 
-class VisualModelView(ModelView):
+class CaruselModelView(ModelView):
     extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
 
     def _list_thumbnail(view, context, model, name):

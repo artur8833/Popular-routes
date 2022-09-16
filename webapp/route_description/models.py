@@ -10,7 +10,7 @@ class Coordinate(db.Model):
     order = db.Column(db.Integer, nullable=False)
 
 
-class Detail(db.Model):
+class DescriptionRoute(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     route_id = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
     description_start = db.Column(db.Text(), nullable=False)
@@ -20,7 +20,7 @@ class Detail(db.Model):
     order = db.Column(db.Integer, nullable=False)
 
 
-class Visual(db.Model):
+class СarouselImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image = db.Column(db.Unicode(128), nullable=False)
     title = db.Column(db.String(80), nullable=False)

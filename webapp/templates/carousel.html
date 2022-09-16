@@ -1,14 +1,14 @@
 
 <div id="carousel" class="carousel slide" data-bs-ride="true">
     <div class="carousel-indicators">
-        {% for visual in maps_routes.visuals %}
-            <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ loop.index0 }}" aria-label="{{visual.title}}" {% if loop.index == 1 %} class="active" aria-current="true" {% endif %}></button>
+        {% for visual in home_page.carouselimage %}
+            <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{loop.index0 }}" aria-label="{{visual.title}}" {% if loop.index == 1 %} class="active" aria-current="true" {% endif %}></button>
         {% endfor %}
     </div>
     
     
     <div class="carousel-inner">
-        {% for visual in maps_routes.visuals %}
+        {% for visual in home_page.carouselimage%}
         <div class="carousel-item{% if loop.index == 1 %} active{% endif %}">
             <img src="{{ url_for('static', filename=visual.image_path)}}" class="d-block w-100"
                  alt="{{ visual.title }}">

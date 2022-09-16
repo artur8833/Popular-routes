@@ -8,15 +8,16 @@ import os
 
 def get_map(pk):
     coordinates = Coordinate.query.filter_by(route_id=pk).all()
-    coordinates_for_rout = Coordinateformap.query.filter_by(route_id=pk).all()
+    coordinates_for_route = Coordinateformap.query.filter_by(route_id=pk).all()
     loc = [(c.latitude, c.longitude) for c in coordinates]
     try:
-        folium_map = folium.Map(location=loc[0],
-                                zoom_start=13,
-                                width=1000,
-                                height=600,
-                                top=80
-                                )
+        folium_map = folium.Map(
+            location=loc[0],
+            zoom_start=13,
+            width=1000,
+            height=600,
+            top=80
+            )
 
         polyline_options = {
             'color': 'blue',
@@ -33,15 +34,16 @@ def get_map(pk):
             draggable=False).add_to(folium_map)
 
     except (IndexError):
-        folium_map = folium.Map(location=[64.6863136, 97.7453061],
-                                zoom_start=4,
-                                width=1000,
-                                height=600,
-                                top=80
-                                )
+        folium_map = folium.Map(
+            location=[64.6863136, 97.7453061],
+            zoom_start=4,
+            width=1000,
+            height=600,
+            top=80
+            )
 
     base_dir = Path(__file__).resolve().parent
-    for coordinate_map in coordinates_for_rout:
+    for coordinate_map in coordinates_for_route:
         image_file = coordinate_map.image_for_map
         image_path = os.path.join(base_dir, '..', 'static', 'media',
                                   image_file)

@@ -9,8 +9,8 @@ class Route(db.Model):
     video = db.Column(db.Text(), nullable=True)
     image = db.Column(db.Unicode(128), nullable=True)
     coordinates = db.relationship('Coordinate', backref='route', lazy=True)
-    detail = db.relationship('Detail', backref='route', lazy=True)
-    visuals = db.relationship('Visual', backref='route', lazy=True)
+    descriptionroute = db.relationship('DescriptionRoute', backref='route', lazy=True)
+    carouselimage = db.relationship('СarouselImage', backref='route', lazy=True)
     coordinateformap = db.relationship('Coordinateformap', backref='route',
                                        lazy=True)
 

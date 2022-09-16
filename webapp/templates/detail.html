@@ -12,18 +12,18 @@
     <section class="signup2">
         <div class="class-row">
             <div class="col-lg-9 offset-lg-1">
-                <h6> {{ detail_routes.description_start|safe }}</h6>
+                <h6> {{ description_routes.description_start|safe }}</h6>
             </div>
         </div>
     </div>
     </section>
     <div class="col-lg-9 offset-lg-1">
-        {{ maps_routes.video|safe }}
+        {{ home_page.video|safe }}
     </div>
     <section class="signup2">
         <div class="class-row">
             <div class="col-lg-9 offset-lg-1">
-                <h6> {{ detail_routes.description_basic|safe }}</h6>
+                <h6> {{ description_routes.description_basic|safe }}</h6>
                 {% if folium_map %}
                     {{ folium_map|safe }}
                 {% else %}
@@ -40,7 +40,7 @@
     <section class="mapping">
         <div class="class-row">
             <div class="col-lg-4 offset-lg-2">
-                <h6> {{ detail_routes.workingmode|safe }} </h6>
+                <h6> {{ description_routes.workingmode|safe }} </h6>
             </div>
         </div>
     </div>
@@ -51,7 +51,7 @@
 <section class="mapping">
     <div class="class-row">
         <div class="col-lg-4 offset-lg-2">
-            <h6> {{ detail_routes.routestart|safe }} </h6>
+            <h6> {{ description_routes.routestart|safe }} </h6>
         </div>
     </div>
 </div>

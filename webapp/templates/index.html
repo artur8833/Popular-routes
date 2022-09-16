@@ -66,7 +66,7 @@
 <div class="grid-posts">
     <div class="container">
       <div class="row">
-        {% for maps_routes in map_rout %}
+        {% for maps_routes in home_page %}
           <div class="col-md-4">
             <div class="card-body">
               <img src="{{ url_for('static', filename=maps_routes.image_path) }}" class="card-img-top" alt="{{ maps_routes.title }}">

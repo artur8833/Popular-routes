@@ -24,7 +24,9 @@ def upload_file(pk):
                 coordinate_for_file = json.loads(read_file)
                 route = next(iter(coordinate_for_file.get("features", [])),
                              None)
-                route_coordinates = route.get('geometry', {}).get('coordinates',[])
+                route_coordinates = route.get('geometry', {}).get(
+                    'coordinates',
+                    [],)
                 route = Route.query.filter_by(id=pk).first()
 
                 for position, coordinates in enumerate(route_coordinates):

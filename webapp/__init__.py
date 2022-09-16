@@ -4,14 +4,14 @@ from flask_login import LoginManager
 from webapp.extensions import db, migrate
 from webapp.user.model import User
 from webapp.user.views import blueprint as user_blueprint
-from webapp.admin import (RouteImageView, CoordinateModelView, DetailModelView,
-                          VisualModelView, CoordinateformapModelView)
+from webapp.admin import (RouteImageView, CoordinateModelView, DescriptionRouteModelView,
+                           CaruselModelView, CoordinateformapModelView)
 from webapp.home_page.view import blueprint as head_blueprint
 from webapp.load_traking_routes.view import blueprint as load_blueprint
 from webapp.route_description.view import blueprint as description_blueprint
 from webapp.home_page.models import Route
-from webapp.route_description.models import (Coordinate, Detail, Coordinateformap,
-                                       Visual)
+from webapp.route_description.models import (Coordinate, DescriptionRoute, Coordinateformap,
+                                             СarouselImage)
 
 
 def create_app():
@@ -44,8 +44,8 @@ def register_login(app):
 def register_admin_views(admin):
     admin.add_view(RouteImageView(Route, db.session))
     admin.add_view(CoordinateModelView(Coordinate, db.session))
-    admin.add_view(DetailModelView(Detail, db.session))
-    admin.add_view(VisualModelView(Visual, db.session))
+    admin.add_view(DescriptionRouteModelView(DescriptionRoute, db.session))
+    admin.add_view(CaruselModelView(СarouselImage, db.session))
     admin.add_view(CoordinateformapModelView(Coordinateformap, db.session))
 
 
